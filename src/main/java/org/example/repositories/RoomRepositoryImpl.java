@@ -3,55 +3,45 @@ package org.example.repositories;
 import org.example.models.Room;
 import org.example.models.RoomType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RoomRepositoryImpl implements RoomRepository {
-    private Map<RoomType, List<Room>> map = new HashMap<>();
+    private Map<Long, Room> map = new HashMap<>();
     private List<Room> totalRooms = new ArrayList<>();
+    private static int counter;
+
+    public RoomRepositoryImpl() {
+        counter = 1;
+    }
 
     @Override
     public Room add(Room room) {
-        RoomType roomType = room.getRoomType();
-        List<Room> roomList = null;
-        if(map.containsKey(roomType)) {
-            roomList = map.get(roomType);
-        } else {
-            roomList = new ArrayList<>();
-        }
-        roomList.add(room);
-        map.put(roomType, roomList);
+        map.put(room.getId(), room);
         return room;
     }
 
     @Override
     public List<Room> getRooms() {
-        for(List<Room> rooms : map.values()){
-            totalRooms.addAll(rooms);
-        }
+        totalRooms.addAll(map.values());
         return totalRooms;
     }
 
     @Override
     public List<Room> getRoomsByRoomTypes(RoomType roomType) {
-        return map.get(roomType);
+        System.out.println(map);
+        return map.values().stream().filter(rooms -> rooms.getRoomType().equals(roomType)).collect(Collectors.toList());
     }
 
     @Override
     public Room save(Room room) {
-        RoomType roomType = room.getRoomType();
-        List<Room> roomList = null;
-
-        if(map.containsKey(roomType)) {
-            roomList = map.get(roomType);
-        } else {
-            roomList = new ArrayList<>();
-        }
-        roomList.add(room);
-        map.put(roomType, roomList);
+        room.setId(counter++);
+        map.put(room.getId(), room);
         return room;
+    }
+
+    @Override
+    public Optional<Room> findById(long roomId) {
+        return Optional.ofNullable(map.get(roomId));
     }
 }

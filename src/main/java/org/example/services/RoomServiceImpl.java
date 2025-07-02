@@ -15,6 +15,10 @@ import java.util.Optional;
 public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
     private UserRepository userRepository;
+    public RoomServiceImpl(RoomRepository roomRepository, UserRepository userRepository) {
+        this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Room addRoom(long userId, String roomName, double price, String rootType, String description) throws UserNotFoundException, UnAuthorisedAccess {
@@ -31,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
         room.setName(roomName);
         room.setPrice(price);
         room.setRoomType(RoomType.valueOf(rootType.toUpperCase()));
-        return roomRepository.add(room);
+        return roomRepository.save(room);
     }
 
     @Override

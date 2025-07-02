@@ -1,8 +1,7 @@
 package org.example.controllers;
 
-import org.example.dtos.GenerateInvoiceRequestDTO;
-import org.example.dtos.GenerateInvoiceResponseDTO;
-import org.example.dtos.ResponseStatus;
+import org.example.dtos.*;
+import org.example.models.Booking;
 import org.example.models.Invoice;
 import org.example.services.BookingService;
 
@@ -22,5 +21,17 @@ public class BookingController {
             generateInvoiceResponseDTO.setResponseStatus(ResponseStatus.FAILURE);
         }
         return generateInvoiceResponseDTO;
+    }
+
+    public MakingBookingResponseDTO makeBooking(MakingBookingRequestDTO makingBookingRequestDTO) {
+        MakingBookingResponseDTO makingBookingResponseDTO = new MakingBookingResponseDTO();
+        try {
+            Booking booking = bookingService.makeBooking(makingBookingRequestDTO.getUserId(), makingBookingRequestDTO.getBookedRooms());
+            makingBookingResponseDTO.setBooking(booking);
+            makingBookingResponseDTO.setResponseStatus(ResponseStatus.SUCCESS);
+        } catch (Exception exception) {
+            makingBookingResponseDTO.setResponseStatus(ResponseStatus.FAILURE);
+        }
+        return makingBookingResponseDTO;
     }
 }

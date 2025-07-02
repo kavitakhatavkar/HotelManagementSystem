@@ -8,7 +8,6 @@ import java.util.List;
 
 public class RoomController {
     private final RoomService roomService;
-
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
@@ -27,8 +26,7 @@ public class RoomController {
 
     public GetRoomResponseDTO getRooms(GetRoomsRequestDTO getRoomsRequestDTO) {
         GetRoomResponseDTO getRoomResponseDTO = new GetRoomResponseDTO();
-        String roomType = getRoomsRequestDTO.getRoomType();
-        List<Room> roomList = roomService.getRooms(roomType);
+        List<Room> roomList = roomService.getRooms(getRoomsRequestDTO.getRoomType());
 
         if (roomList != null) {
             getRoomResponseDTO.setResponseStatus(ResponseStatus.SUCCESS);
