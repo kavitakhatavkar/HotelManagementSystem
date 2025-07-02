@@ -9,6 +9,7 @@ import org.example.models.UserType;
 import org.example.repositories.RoomRepository;
 import org.example.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
@@ -31,5 +32,16 @@ public class RoomServiceImpl implements RoomService {
         room.setPrice(price);
         room.setRoomType(RoomType.valueOf(rootType.toUpperCase()));
         return roomRepository.add(room);
+    }
+
+    @Override
+    public List<Room> getRooms(String roomType) {
+        if (roomType == null) {
+            return roomRepository.getRooms();
+        }
+        if (!roomType.equalsIgnoreCase(RoomType.DELUXE.name()) && !roomType.equalsIgnoreCase(RoomType.SUITE.name()) && !roomType.equalsIgnoreCase(RoomType.SUPER_DELUXE.name())) {
+            return null;
+        }
+        return roomRepository.getRoomsByRoomTypes(RoomType.valueOf(roomType));
     }
 }

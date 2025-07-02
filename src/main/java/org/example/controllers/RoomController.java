@@ -1,10 +1,10 @@
 package org.example.controllers;
 
-import org.example.dtos.AddRoomRequestDTO;
-import org.example.dtos.AddRoomResponseDto;
-import org.example.dtos.ResponseStatus;
+import org.example.dtos.*;
 import org.example.models.Room;
 import org.example.services.RoomService;
+
+import java.util.List;
 
 public class RoomController {
     private final RoomService roomService;
@@ -23,5 +23,19 @@ public class RoomController {
             addRoomResponseDto.setResponseStatus(ResponseStatus.FAILURE);
         }
         return addRoomResponseDto;
+    }
+
+    public GetRoomResponseDTO getRooms(GetRoomsRequestDTO getRoomsRequestDTO) {
+        GetRoomResponseDTO getRoomResponseDTO = new GetRoomResponseDTO();
+        String roomType = getRoomsRequestDTO.getRoomType();
+        List<Room> roomList = roomService.getRooms(roomType);
+
+        if (roomList != null) {
+            getRoomResponseDTO.setResponseStatus(ResponseStatus.SUCCESS);
+        } else {
+            getRoomResponseDTO.setResponseStatus(ResponseStatus.FAILURE);
+        }
+        getRoomResponseDTO.setRooms(roomList);
+        return getRoomResponseDTO;
     }
 }
