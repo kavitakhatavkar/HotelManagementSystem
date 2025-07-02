@@ -8,11 +8,9 @@ import org.example.services.BookingService;
 
 public class BookingController {
     private final BookingService bookingService;
-
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
-
     public GenerateInvoiceResponseDTO generateInvoice(GenerateInvoiceRequestDTO generateInvoiceRequestDTO) {
         Invoice invoice = null;
         GenerateInvoiceResponseDTO generateInvoiceResponseDTO = new GenerateInvoiceResponseDTO();
